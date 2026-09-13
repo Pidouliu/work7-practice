@@ -53,6 +53,19 @@ const ring = new THREE.Mesh(
 ring.rotation.x = Math.PI / 2.5;
 saturn.add(ring);
 
+// 星空：800 个随机分布的点
+const starCount = 800;
+const positions = new Float32Array(starCount * 3);
+for (let i = 0; i < starCount; i++) {
+  positions[i * 3] = (Math.random() - 0.5) * 150;
+  positions[i * 3 + 1] = (Math.random() - 0.5) * 150;
+  positions[i * 3 + 2] = (Math.random() - 0.5) * 150;
+}
+const starGeo = new THREE.BufferGeometry();
+starGeo.setAttribute('position', new THREE.BufferAttribute(positions, 3));
+const stars = new THREE.Points(starGeo, new THREE.PointsMaterial({ color: 0xffffff, size: 0.3 }));
+scene.add(stars);
+
 const animate = ( ) => { 
   requestAnimationFrame(animate);
   sun.rotation.y += 0.003;
@@ -69,3 +82,5 @@ window.addEventListener( 'resize', () => {
   camera.updateProjectionMatrix();
   renderer.setSize(window.innerWidth, window.innerHeight);
 });
+
+const controls = new THREE.OrbitControls(camera, renderer.domElement);
